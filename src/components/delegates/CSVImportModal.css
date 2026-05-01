@@ -1,0 +1,9 @@
+.csv-dropzone {
+  border: 2px dashed var(--border); border-radius: var(--radius-lg);
+  padding: 32px; display: flex; flex-direction: column;
+  align-items: center; gap: 8px; cursor: pointer;
+  color: var(--text-muted); transition: all var(--transition);
+  margin-bottom: 14px;
+}
+.csv-dropzone:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.csv-preview { margin-bottom: 8px; }

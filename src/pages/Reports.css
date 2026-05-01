@@ -1,0 +1,4 @@
+.reports-page { padding: 24px; display: flex; flex-direction: column; gap: 24px; max-width: 1100px; }
+.reports-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.reports-section { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; }

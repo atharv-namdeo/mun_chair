@@ -1,0 +1,51 @@
+.app-header {
+  height: var(--header-h);
+  background: rgba(18,20,26,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-w);
+  right: 0;
+  z-index: 90;
+  transition: left 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+.header-left  { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.header-center { display: flex; align-items: center; justify-content: center; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.header-session-info {
+  display: flex; align-items: center; gap: 8px;
+  min-width: 0; overflow: hidden;
+}
+.header-committee { font: 600 0.9rem var(--font); color: var(--text-primary); white-space: nowrap; }
+.header-sep       { color: var(--text-muted); }
+.header-topic     { font: 400 0.85rem var(--font); color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.header-no-session { color: var(--text-muted); font-size: 0.88rem; }
+
+.quorum-badge {
+  display: flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 999px;
+  font: 600 0.75rem var(--font); flex-shrink: 0;
+}
+.quorum-ok  { background: var(--green-dim); color: var(--green); }
+.quorum-low { background: var(--red-dim); color: var(--red); }
+
+.session-clock {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: var(--radius);
+  background: var(--bg-2); border: 1px solid var(--border);
+  cursor: pointer; font: 600 1rem var(--mono);
+  color: var(--text-primary);
+  transition: all var(--transition);
+}
+.session-clock:hover { border-color: var(--accent); color: var(--accent); }
+
+.status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-active { background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse-red 2s infinite; }
+.dot-idle   { background: var(--text-muted); }

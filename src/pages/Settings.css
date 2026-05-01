@@ -1,0 +1,14 @@
+.settings-page { padding: 24px; max-width: 700px; display: flex; flex-direction: column; gap: 20px; }
+.settings-section {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 20px;
+}
+.weight-row { margin-bottom: 12px; }
+.weight-input-row { display: flex; align-items: center; gap: 12px; }
+.weight-bar {
+  flex: 1; height: 6px; background: var(--bg-3); border-radius: 3px; overflow: hidden;
+}
+.weight-fill {
+  height: 100%; background: linear-gradient(90deg, var(--accent), var(--cyan));
+  border-radius: 3px; transition: width 0.3s ease;
+}

@@ -1,0 +1,26 @@
+.motion-panel-card {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 18px;
+}
+.motion-form {
+  background: var(--bg-1); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px; margin-bottom: 14px;
+  animation: slideUp 0.15s ease;
+}
+.motion-list { display: flex; flex-direction: column; gap: 8px; }
+.motion-item {
+  background: var(--bg-1); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px;
+  transition: border-color var(--transition);
+}
+.motion-item:hover { border-color: var(--border-hover); }
+.motion-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.motion-type-badge {
+  font: 600 0.72rem var(--font); color: var(--accent);
+  text-transform: capitalize; background: var(--accent-dim);
+  padding: 2px 8px; border-radius: 999px;
+}
+.motion-desc { font: 400 0.85rem var(--font); color: var(--text-secondary); }
+.voting-controls { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+.vote-inputs { display: flex; gap: 12px; align-items: flex-end; }
+.vote-inputs .input { text-align: center; }
