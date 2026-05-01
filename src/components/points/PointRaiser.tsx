@@ -21,6 +21,8 @@ export const PointRaiser: React.FC = () => {
   const { activeSpeech } = useSpeechStore();
   const { session } = useSessionStore();
   const { addNotification } = useUIStore();
+  const [selectedDelegate, setSelectedDelegate] = useState('');
+  const [questionText, setQuestionText] = useState('');
   const [isProcedural, setIsProcedural] = useState(false);
   const [chairRemarks, setChairRemarks] = useState('');
   const [loading, setLoading] = useState(false);
