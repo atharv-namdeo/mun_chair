@@ -8,6 +8,7 @@ import { SessionPage } from './pages/Session';
 import { Reports } from './pages/Reports';
 import { Settings } from './pages/Settings';
 import { Delegates } from './pages/Delegates';
+import { ResolutionsPage } from './pages/Resolutions';
 import { AddDelegateModal } from './components/delegates/AddDelegateModal';
 import { CSVImportModal } from './components/delegates/CSVImportModal';
 import './components/delegates/CSVImportModal.css';
@@ -20,6 +21,7 @@ const PAGE_MAP: Record<string, React.FC> = {
   home: Home,
   session: SessionPage,
   delegates: Delegates,
+  resolutions: ResolutionsPage,
   reports: Reports,
   settings: Settings,
 };

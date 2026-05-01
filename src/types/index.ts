@@ -182,3 +182,26 @@ export interface SpeakerQueueEntry {
   country: string;
   addedAt: number;
 }
+
+export interface Resolution {
+  id: string;
+  sessionId: string;
+  title: string;
+  code: string; // e.g., DR 1.1
+  status: 'working_paper' | 'draft_resolution' | 'amendment' | 'passed' | 'failed';
+  sponsors: string[]; // delegateIds
+  signatories: string[]; // delegateIds
+  contentUrl?: string; // Link to Google Doc/PDF
+  createdAt: number;
+}
+
+export interface CrisisMessage {
+  id: string;
+  sessionId: string;
+  title: string;
+  content: string;
+  type: 'update' | 'alert' | 'directive';
+  isFlash: boolean;
+  createdAt: number;
+}
+

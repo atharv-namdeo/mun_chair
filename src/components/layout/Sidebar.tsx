@@ -11,6 +11,7 @@ const NAV = [
   { id: 'home',     icon: Home,          label: 'Home'      },
   { id: 'session',   icon: LayoutDashboard, label: 'Session'   },
   { id: 'delegates', icon: Users,           label: 'Delegates' },
+  { id: 'resolutions', icon: FileText,      label: 'Resolutions' },
   { id: 'reports',   icon: FileText,        label: 'Reports'   },
   { id: 'settings',  icon: Settings,        label: 'Settings'  },
 ];
