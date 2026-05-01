@@ -3,20 +3,22 @@ import { useSessionStore } from '../../store/sessionStore';
 import { useDelegateStore } from '../../store/delegateStore';
 import { useSpeechStore } from '../../store/speechStore';
 import { useTimerStore } from '../../store/timerStore';
+import { updateSession } from '../../lib/firestore/sessions';
+import { startSpeech } from '../../lib/firestore/speeches';
 import { Users, Play, Pause, RotateCcw, ListOrdered } from 'lucide-react';
 import './GSLPanel.css';
 
 export const GSLPanel: React.FC = () => {
-  const { session, updateSessionMetadata } = useSessionStore();
-  const { delegates, speakerQueue, addToQueue, removeFromQueue } = useDelegateStore();
-  const { startSpeech, activeSpeech } = useSpeechStore();
-  const { timers, setTimerState } = useTimerStore();
+  const { session, updateSession: updateSessionStore } = useSessionStore();
+  const { delegates, speakerQueue, removeFromQueue } = useDelegateStore();
+  const { activeSpeech } = useSpeechStore();
+  const { initSpeakerTimer } = useTimerStore();
 
   const isGSLEnabled = session?.debateMode === 'gsl';
 
-  const toggleGSL = () => {
+  const toggleGSL = async () => {
     if (!session) return;
-    updateSessionMetadata(session.id, { 
+    await updateSession(session.id, { 
       debateMode: isGSLEnabled ? 'idle' : 'gsl' 
     });
   };
@@ -24,14 +26,18 @@ export const GSLPanel: React.FC = () => {
   const nextSpeaker = async () => {
     if (speakerQueue.length === 0 || !session) return;
     const next = speakerQueue[0];
-    await startSpeech({
-      sessionId: session.id,
-      delegateId: next.delegateId,
-      delegateCountry: next.country,
-      allocatedSeconds: session.speakingTimeSeconds,
-      type: 'general',
-      isGSL: true
-    });
+    await startSpeech(
+      session.id,
+      next.delegateId,
+      next.country,
+      session.speakingTimeSeconds,
+      1, // caucusRound
+      false, // isCrisis
+      '', // crisisTag
+      'general',
+      true
+    );
+    initSpeakerTimer(session.speakingTimeSeconds);
     removeFromQueue(next.delegateId);
   };
 

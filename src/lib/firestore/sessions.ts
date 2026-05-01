@@ -63,6 +63,8 @@ export const createSession = async (data: {
       unmodTimer: defaultTimer(),
     },
     settings: defaultSettings(),
+    debateMode: 'idle',
+    metadata: {},
     createdAt: now,
     updatedAt: now,
   };
@@ -125,3 +127,12 @@ export const updateSessionSettings = async (
   const ref = doc(db, COL, sessionId);
   await updateDoc(ref, { settings, updatedAt: Date.now() });
 };
+
+export const updateSessionMetadata = async (
+  sessionId: string,
+  data: Partial<Session>
+): Promise<void> => {
+  const ref = doc(db, COL, sessionId);
+  await updateDoc(ref, { ...data, updatedAt: Date.now() });
+};
+

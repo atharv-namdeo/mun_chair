@@ -29,10 +29,15 @@ export const SpeakersList: React.FC = () => {
         delegateId: entry.delegateId, delegateCountry: entry.country,
         startAt: Date.now(), endAt: null,
         allocatedSeconds: session.speakingTimeSeconds,
-        usedSeconds: 0, yieldType: 'none' as const,
+        usedSeconds: 0, 
+        type: 'general' as const,
+        isGSL: false,
+        yieldType: 'none' as const,
         yieldedToDelegateId: null,
         isCrisis: session.crisisMode, crisisTag: session.crisisTag,
-        caucusRound, createdAt: Date.now(),
+        caucusRound, 
+        metadata: {},
+        createdAt: Date.now(),
       };
       setActiveSpeech(speechObj);
       initSpeakerTimer(session.speakingTimeSeconds);

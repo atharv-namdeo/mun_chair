@@ -4,7 +4,16 @@ import { useSessionStore } from '../store/sessionStore';
 import { useSpeechStore } from '../store/speechStore';
 import { useMotionStore } from '../store/motionStore';
 import { useTimerStore } from '../store/timerStore';
-import { FileDown, TrendingUp, Mic, BarChart2 } from 'lucide-react';
+import { 
+  FileDown, 
+  TrendingUp, 
+  Mic, 
+  BarChart2, 
+  FileText, 
+  Activity, 
+  Clock, 
+  Users 
+} from 'lucide-react';
 import './Reports.css';
 
 const fmtTime = (s: number) => {

@@ -103,7 +103,7 @@ export const DelegateList: React.FC = () => {
                 <td>
                   <button
                     className={`btn btn-icon btn-sm ${d.isPresent ? 'btn-success' : 'btn-ghost'}`}
-                    onClick={() => togglePresence(d.id, !d.isPresent)}
+                    onClick={() => togglePresence(d.id, d.isPresent ? 'absent' : 'present')}
                     title={d.isPresent ? 'Mark absent' : 'Mark present'}
                   >
                     {d.isPresent ? <UserCheck size={13} /> : <UserX size={13} />}

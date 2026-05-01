@@ -37,6 +37,8 @@ export const addDelegate = async (
     voteCount: 0,
     rightOfReplyCount: 0,
     engagementScore: 0,
+    presenceStatus: 'present',
+    metadata: {},
     createdAt: now,
     updatedAt: now,
   };
@@ -68,6 +70,8 @@ export const bulkImportDelegates = async (
       voteCount: 0,
       rightOfReplyCount: 0,
       engagementScore: 0,
+      presenceStatus: 'present',
+      metadata: {},
       createdAt: now,
       updatedAt: now,
     };
@@ -136,9 +140,14 @@ export const getSessionDelegates = async (
     .filter((d) => !d.isDeleted);
 };
 
-export const markPresence = async (
+export const updateDelegatePresence = async (
   delegateId: string,
-  isPresent: boolean
+  status: 'present' | 'present_and_voting' | 'absent'
 ): Promise<void> => {
-  await updateDelegate(delegateId, { isPresent });
+  const ref = doc(db, COL, delegateId);
+  await updateDoc(ref, { 
+    presenceStatus: status, 
+    isPresent: status !== 'absent',
+    updatedAt: Date.now() 
+  });
 };

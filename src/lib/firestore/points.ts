@@ -32,6 +32,8 @@ export const raisePoint = async (
     questionText,
     chairRuling: 'pending',
     chairRemarks: '',
+    isProcedural: false,
+    didPauseTimer: false,
     linkedSpeechId,
     createdAt: now,
   };

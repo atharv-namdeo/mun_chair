@@ -5,7 +5,7 @@ import {
   updateDelegate,
   softDeleteDelegate,
   bulkImportDelegates,
-  markPresence,
+  updateDelegatePresence,
   recalculateEngagementScore,
 } from '../lib/firestore/delegates';
 import type { Delegate, EngagementWeights, SpeakerQueueEntry } from '../types';
@@ -25,7 +25,7 @@ interface DelegateStore {
     rows: { country: string; delegateName: string; bloc: string }[]
   ) => Promise<void>;
   softDelete: (delegateId: string) => Promise<void>;
-  togglePresence: (delegateId: string, isPresent: boolean) => Promise<void>;
+  togglePresence: (delegateId: string, status: 'present' | 'absent') => Promise<void>;
   recalcEngagement: (delegateId: string, weights: EngagementWeights) => Promise<void>;
   addToQueue: (delegate: Delegate) => void;
   removeFromQueue: (delegateId: string) => void;
@@ -72,8 +72,8 @@ export const useDelegateStore = create<DelegateStore>((set, get) => ({
     }));
   },
 
-  togglePresence: async (delegateId, isPresent) => {
-    await markPresence(delegateId, isPresent);
+  togglePresence: async (delegateId, status) => {
+    await updateDelegatePresence(delegateId, status as any);
   },
 
   recalcEngagement: async (delegateId, weights) => {

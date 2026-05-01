@@ -23,7 +23,9 @@ export const startSpeech = async (
   allocatedSeconds: number,
   caucusRound: number,
   isCrisis: boolean,
-  crisisTag: string
+  crisisTag: string,
+  type: 'general' | 'mod' | 'comment' | 'procedural' = 'general',
+  isGSL: boolean = false
 ): Promise<string> => {
   const now = Date.now();
   const speech: Omit<Speech, 'id'> = {
@@ -34,11 +36,14 @@ export const startSpeech = async (
     endAt: null,
     allocatedSeconds,
     usedSeconds: 0,
+    type,
+    isGSL,
     yieldType: 'none',
     yieldedToDelegateId: null,
     isCrisis,
     crisisTag,
     caucusRound,
+    metadata: {},
     createdAt: now,
   };
   const ref = await addDoc(collection(db, COL), speech);

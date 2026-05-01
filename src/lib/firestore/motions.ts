@@ -41,6 +41,8 @@ export const proposeMotion = async (
     forVotes: 0,
     againstVotes: 0,
     abstentions: 0,
+    absentCount: 0,
+    metadata: {},
     createdAt: now,
     resolvedAt: null,
   };
