@@ -14,13 +14,13 @@ export const ActiveSpeech: React.FC = () => {
   const { session } = useSessionStore();
   const { openModal, addNotification } = useUIStore();
 
-  const stopSpeech = async (yieldType: 'none' | 'chair' | 'delegate' | 'questions' = 'none') => {
+  const stopSpeech = async (yieldType: 'none' | 'chair' | 'delegate' | 'questions' = 'none', yieldToId: string | null = null) => {
     if (!activeSpeech || !session) return;
     try {
       await endSpeech(
         activeSpeech.id, session.id, activeSpeech.delegateId,
         activeSpeech.delegateCountry, speakerTimer.elapsedSeconds,
-        yieldType, null
+        yieldType, yieldToId
       );
       setActiveSpeech(null);
       resetSpeakerTimer();

@@ -34,12 +34,16 @@ export interface Session {
   totalDelegates: number;
   crisisMode: boolean;
   crisisTag: string;
+  debateMode: 'gsl' | 'mod' | 'unmod' | 'voting' | 'idle';
+  activeModTopic?: string;
+  activeModTotalTime?: number;
   timerState: {
     speakerTimer: SerializedTimer;
     caucusTimer: SerializedTimer;
     unmodTimer: SerializedTimer;
   };
   settings: SessionSettings;
+  metadata: Record<string, unknown>;
   createdAt: number;
   updatedAt: number;
 }
@@ -86,7 +90,9 @@ export interface Delegate {
   pointCount: number;
   voteCount: number;
   rightOfReplyCount: number;
+  presenceStatus: 'present' | 'present_and_voting' | 'absent';
   engagementScore: number;
+  metadata: Record<string, unknown>;
   createdAt: number;
   updatedAt: number;
 }
@@ -100,11 +106,14 @@ export interface Speech {
   endAt: number | null;
   allocatedSeconds: number;
   usedSeconds: number;
+  type: 'general' | 'mod' | 'comment' | 'procedural';
+  isGSL: boolean;
   yieldType: YieldType;
   yieldedToDelegateId: string | null;
   isCrisis: boolean;
   crisisTag: string;
   caucusRound: number;
+  metadata: Record<string, unknown>;
   createdAt: number;
 }
 
@@ -137,6 +146,9 @@ export interface Motion {
   forVotes: number;
   againstVotes: number;
   abstentions: number;
+  absentCount: number;
+  voteResults?: Record<string, 'for' | 'against' | 'abstain' | 'absent'>;
+  metadata: Record<string, unknown>;
   createdAt: number;
   resolvedAt: number | null;
 }
@@ -147,10 +159,12 @@ export interface Point {
   delegateId: string;
   delegateCountry: string;
   type: PointType;
-  questionText: string; // for POI / PI
+  questionText: string; // for POI / PI / POO reasoning
   chairRuling: ChairRuling;
   chairRemarks: string;
-  linkedSpeechId: string | null; // POI links to a speech
+  isProcedural: boolean;
+  didPauseTimer: boolean;
+  linkedSpeechId: string | null; 
   createdAt: number;
 }
 

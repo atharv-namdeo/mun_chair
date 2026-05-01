@@ -1,0 +1,66 @@
+.gsl-panel {
+  padding: 16px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+}
+
+.gsl-panel.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 15px var(--accent-dim);
+}
+
+.gsl-content {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+.gsl-queue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gsl-queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.queue-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  background: var(--bg-1);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+}
+
+.queue-item .idx {
+  width: 18px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.queue-item .country {
+  flex: 1;
+  font-weight: 500;
+}
+
+.empty-queue {
+  padding: 20px;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}

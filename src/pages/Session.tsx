@@ -9,6 +9,8 @@ import { SpeakerTimer, CaucusTimer, UnmodTimer } from '../components/timer/Timer
 import { PointRaiser } from '../components/points/PointRaiser';
 import { MotionPanel } from '../components/points/MotionPanel';
 import { TimelinePanel } from '../components/timeline/TimelinePanel';
+import { GSLPanel } from '../components/speech/GSLPanel';
+import { AttendancePanel } from '../components/delegates/AttendancePanel';
 import { DelegateList } from '../components/delegates/DelegateList';
 import { AlertTriangle, Settings2 } from 'lucide-react';
 import './Session.css';
@@ -47,6 +49,8 @@ export const SessionPage: React.FC = () => {
       <div className="session-col session-col-left">
         <ActiveSpeech />
         <SpeakersList />
+        <GSLPanel />
+        <AttendancePanel />
         <div className="timers-row">
           <CaucusTimer />
           <UnmodTimer />

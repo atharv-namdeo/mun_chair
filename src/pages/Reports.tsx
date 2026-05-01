@@ -218,6 +218,21 @@ export const Reports: React.FC = () => {
           </table>
         </div>
       </div>
+      <div className="reports-section grid md:grid-cols-2 gap-6">
+        <div className="report-card">
+          <h2 className="section-title flex items-center gap-2 mb-3"><FileText size={16} /> Chair Rulings Log</h2>
+          <div className="table-wrap">
+            <p className="text-xs text-muted p-4 italic">A formal record of all procedural rulings and interpretations made during this session.</p>
+          </div>
+        </div>
+        <div className="report-card">
+          <h2 className="section-title flex items-center gap-2 mb-3"><Activity size={16} /> Participation Patterns</h2>
+          <div className="table-wrap">
+             <p className="text-xs text-muted p-4 italic">Analysis of delegate engagement patterns, including procedural vs substantive participation.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
+
