@@ -11,7 +11,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import type { Motion, MotionType, VoteType } from '../../types';
-import { appendTimelineEvent } from './timeline';
+import { logTimelineEvent } from './timeline';
 
 const COL = 'motions';
 
@@ -52,7 +52,8 @@ export const proposeMotion = async (
     updatedAt: Date.now(),
   });
 
-  await appendTimelineEvent(sessionId, {
+  await logTimelineEvent({
+    sessionId,
     type: 'motion_proposed',
     description: `${proposerCountry} proposed: ${description}`,
     delegateId: proposerDelegateId,
@@ -81,7 +82,8 @@ export const updateMotionStatus = async (
     resolvedAt: status !== 'pending' && status !== 'voting' ? Date.now() : null,
   });
 
-  await appendTimelineEvent(sessionId, {
+  await logTimelineEvent({
+    sessionId,
     type: `motion_${status}`,
     description: `Motion ${status} — For: ${forVotes}, Against: ${againstVotes}, Abstentions: ${abstentions}`,
     delegateId: null,

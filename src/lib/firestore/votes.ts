@@ -12,7 +12,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import type { Vote } from '../../types';
-import { appendTimelineEvent } from './timeline';
+import { logTimelineEvent } from './timeline';
 
 const COL = 'votes';
 

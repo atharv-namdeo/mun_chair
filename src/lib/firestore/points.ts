@@ -11,7 +11,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import type { Point, PointType, ChairRuling } from '../../types';
-import { appendTimelineEvent } from './timeline';
+import { logTimelineEvent } from './timeline';
 
 const COL = 'points';
 
@@ -43,7 +43,8 @@ export const raisePoint = async (
     updatedAt: Date.now(),
   });
 
-  await appendTimelineEvent(sessionId, {
+  await logTimelineEvent({
+    sessionId,
     type: 'point_raised',
     description: `${delegateCountry} raised a ${type}`,
     delegateId,
@@ -65,7 +66,8 @@ export const applyChairRuling = async (
   const ref = doc(db, COL, pointId);
   await updateDoc(ref, { chairRuling: ruling, chairRemarks: remarks });
 
-  await appendTimelineEvent(sessionId, {
+  await logTimelineEvent({
+    sessionId,
     type: 'chair_ruling',
     description: `Chair ruled ${ruling} on point by ${delegateCountry}${remarks ? ': ' + remarks : ''}`,
     delegateId: null,

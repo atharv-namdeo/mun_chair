@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useResolutionStore } from '../store/resolutionStore';
-import { useSessionStore } from '../store/sessionStore';
-import { useDelegateStore } from '../store/delegateStore';
-import { createResolution, updateResolutionStatus } from '../lib/firestore/resolutions';
-import { FileText, Plus, Check, X, FileCheck, ExternalLink } from 'lucide-react';
+import { useResolutionStore } from '../../store/resolutionStore';
+import { useSessionStore } from '../../store/sessionStore';
+import { useDelegateStore } from '../../store/delegateStore';
+import { createResolution, updateResolutionStatus } from '../../lib/firestore/resolutions';
+import { FileText, Plus, ExternalLink } from 'lucide-react';
 import './ResolutionManager.css';
 
 export const ResolutionManager: React.FC = () => {
@@ -73,7 +73,7 @@ export const ResolutionManager: React.FC = () => {
       )}
 
       <div className="res-grid">
-        {resolutions.map(res => (
+        {resolutions.map((res) => (
           <div key={res.id} className="res-card card">
             <div className="res-card-header">
               <span className="res-code mono">{res.code}</span>

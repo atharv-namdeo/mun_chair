@@ -15,12 +15,10 @@ import type { TimelineEvent } from '../../types';
 
 const COL = 'timeline';
 
-export const appendTimelineEvent = async (
-  sessionId: string,
-  data: Omit<TimelineEvent, 'id' | 'sessionId' | 'undoneAt' | 'createdAt'>
+export const logTimelineEvent = async (
+  data: Omit<TimelineEvent, 'id' | 'undoneAt' | 'createdAt'>
 ): Promise<string> => {
   const event: Omit<TimelineEvent, 'id'> = {
-    sessionId,
     ...data,
     undoneAt: null,
     createdAt: Date.now(),

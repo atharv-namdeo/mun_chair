@@ -11,7 +11,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import type { POI } from '../../types';
-import { appendTimelineEvent } from './timeline';
+import { logTimelineEvent } from './timeline';
 
 const COL = 'pois';
 
@@ -45,7 +45,8 @@ export const logPOI = async (
     updatedAt: Date.now(),
   });
 
-  await appendTimelineEvent(sessionId, {
+  await logTimelineEvent({
+    sessionId,
     type: 'poi_raised',
     description: `${askerCountry} raised a POI${wasAllowed ? '' : ' (not allowed)'}`,
     delegateId: askerDelegateId,

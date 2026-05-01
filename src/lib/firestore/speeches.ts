@@ -12,7 +12,7 @@ import {
 import { db } from '../firebase';
 import type { Speech, YieldType } from '../../types';
 import { updateDelegate } from './delegates';
-import { appendTimelineEvent } from './timeline';
+import { logTimelineEvent } from './timeline';
 
 const COL = 'speeches';
 
@@ -42,7 +42,8 @@ export const startSpeech = async (
     createdAt: now,
   };
   const ref = await addDoc(collection(db, COL), speech);
-  await appendTimelineEvent(sessionId, {
+  await logTimelineEvent({
+    sessionId,
     type: 'speech_start',
     description: `${delegateCountry} began speaking`,
     delegateId,
@@ -85,7 +86,8 @@ export const endSpeech = async (
     updatedAt: Date.now(),
   });
 
-  await appendTimelineEvent(sessionId, {
+  await logTimelineEvent({
+    sessionId,
     type: 'speech_end',
     description: `${delegateCountry} finished speaking (${usedSeconds}s used, yield: ${yieldType})`,
     delegateId,
