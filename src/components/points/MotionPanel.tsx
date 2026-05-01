@@ -95,16 +95,27 @@ export const MotionPanel: React.FC = () => {
             </div>
           </div>
           {form.type === 'mod_caucus' && (
-            <div className="form-row">
+            <>
               <div className="form-group">
-                <label>Speaking Time (s)</label>
-                <input className="input" type="number" value={form.speakingTime} onChange={e => setForm({...form, speakingTime: e.target.value})} />
+                <label>Caucus Topic</label>
+                <input 
+                  className="input" 
+                  placeholder="e.g. Funding mechanisms for climate initiatives" 
+                  value={form.desc} 
+                  onChange={e => setForm({...form, desc: e.target.value})} 
+                />
               </div>
-              <div className="form-group">
-                <label>Caucus Duration (s)</label>
-                <input className="input" type="number" value={form.caucusDuration} onChange={e => setForm({...form, caucusDuration: e.target.value})} />
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Speaking Time (s)</label>
+                  <input className="input" type="number" value={form.speakingTime} onChange={e => setForm({...form, speakingTime: e.target.value})} />
+                </div>
+                <div className="form-group">
+                  <label>Caucus Duration (s)</label>
+                  <input className="input" type="number" value={form.caucusDuration} onChange={e => setForm({...form, caucusDuration: e.target.value})} />
+                </div>
               </div>
-            </div>
+            </>
           )}
           <div className="form-row">
             <div className="form-group">

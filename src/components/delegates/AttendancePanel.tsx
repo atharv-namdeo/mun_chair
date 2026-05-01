@@ -9,9 +9,12 @@ export const AttendancePanel: React.FC = () => {
   const { delegates } = useDelegateStore();
   const { session } = useSessionStore();
 
-  const presentCount = delegates.filter(d => d.presenceStatus !== 'absent').length;
+  const presentAndVotingCount = delegates.filter(d => d.presenceStatus === 'present_and_voting').length;
+  const presentOnlyCount = delegates.filter(d => d.presenceStatus === 'present').length;
+  const totalPresent = presentAndVotingCount + presentOnlyCount;
   const totalCount = delegates.length;
-  const quorum = Math.ceil(totalCount * (2/3));
+  const quorum = Math.ceil(totalCount / 2) + 1; // Standard simple majority quorum
+  const twoThirdsQuorum = Math.ceil(totalCount * (2/3));
 
   const setStatus = async (id: string, status: 'present' | 'present_and_voting' | 'absent') => {
     await updateDelegatePresence(id, status);
@@ -24,9 +27,17 @@ export const AttendancePanel: React.FC = () => {
           <Users size={18} className="text-accent" />
           <h3 className="section-title">Attendance & Quorum</h3>
         </div>
-        <div className="quorum-badge">
-          <span className={`status-dot ${presentCount >= quorum ? 'bg-green' : 'bg-red'}`}></span>
-          {presentCount} / {totalCount} (Req: {quorum})
+        <div className="quorum-stats">
+          <div className="stat-group">
+            <span className="label">Quorum (50%+1):</span>
+            <span className={`value ${totalPresent >= quorum ? 'text-green' : 'text-red'}`}>
+              {totalPresent} / {totalCount}
+            </span>
+          </div>
+          <div className="stat-group">
+            <span className="label">Voting Pool:</span>
+            <span className="value text-accent">{presentAndVotingCount}</span>
+          </div>
         </div>
       </div>
 

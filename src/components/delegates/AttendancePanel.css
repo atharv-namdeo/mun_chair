@@ -5,16 +5,29 @@
   gap: 14px;
 }
 
-.quorum-badge {
+.quorum-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: right;
+}
+
+.stat-group {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+}
+
+.stat-group .label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.stat-group .value {
   font-weight: 700;
-  color: var(--text-secondary);
-  background: var(--bg-3);
-  padding: 4px 10px;
-  border-radius: 999px;
+  font-family: var(--font-mono);
 }
 
 .status-dot {

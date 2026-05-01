@@ -21,8 +21,8 @@ export const PointRaiser: React.FC = () => {
   const { activeSpeech } = useSpeechStore();
   const { session } = useSessionStore();
   const { addNotification } = useUIStore();
-  const [selectedDelegate, setSelectedDelegate] = useState('');
-  const [questionText, setQuestionText] = useState('');
+  const [isProcedural, setIsProcedural] = useState(false);
+  const [chairRemarks, setChairRemarks] = useState('');
   const [loading, setLoading] = useState(false);
 
   const presentDelegates = delegates.filter(d => d.isPresent);
@@ -44,11 +44,13 @@ export const PointRaiser: React.FC = () => {
       } else {
         await raisePoint(
           session.id, delegate.id, delegate.country,
-          type, questionText, activeSpeech?.id || null
+          type, questionText, activeSpeech?.id || null,
+          isProcedural, chairRemarks
         );
       }
       addNotification(`${type} raised by ${delegate.country}`, 'info');
       setQuestionText('');
+      setChairRemarks('');
     } catch {
       addNotification('Failed to log point', 'error');
     }
@@ -61,29 +63,54 @@ export const PointRaiser: React.FC = () => {
         <span className="section-title">Raise a Point</span>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="point-delegate">Delegate</label>
-        <select
-          id="point-delegate"
-          className="select"
-          value={selectedDelegate}
-          onChange={e => setSelectedDelegate(e.target.value)}
-        >
-          <option value="">— Select delegate —</option>
-          {presentDelegates.map(d => (
-            <option key={d.id} value={d.id}>{d.country}</option>
-          ))}
-        </select>
+      <div className="point-form-grid">
+        <div className="form-group">
+          <label htmlFor="point-delegate">Delegate</label>
+          <select
+            id="point-delegate"
+            className="select"
+            value={selectedDelegate}
+            onChange={e => setSelectedDelegate(e.target.value)}
+          >
+            <option value="">— Select delegate —</option>
+            {presentDelegates.map(d => (
+              <option key={d.id} value={d.id}>{d.country}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group flex items-end pb-1">
+          <label className="checkbox-container text-xs">
+            <input 
+              type="checkbox" 
+              checked={isProcedural} 
+              onChange={e => setIsProcedural(e.target.checked)} 
+            />
+            <span className="checkmark"></span>
+            Procedural / Rule Claim
+          </label>
+        </div>
       </div>
 
       <div className="form-group">
-        <label htmlFor="point-question">Question / Note (optional)</label>
+        <label htmlFor="point-question">Question / Claim Text (POI/POO)</label>
         <input
           id="point-question"
           className="input"
-          placeholder="Enter question text..."
+          placeholder="Enter question or procedure violated..."
           value={questionText}
           onChange={e => setQuestionText(e.target.value)}
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="point-remarks">Chair Remarks / Ruling Rationale</label>
+        <input
+          id="point-remarks"
+          className="input"
+          placeholder="Optional chair remarks..."
+          value={chairRemarks}
+          onChange={e => setChairRemarks(e.target.value)}
         />
       </div>
 

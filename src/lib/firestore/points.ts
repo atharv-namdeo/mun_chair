@@ -21,7 +21,9 @@ export const raisePoint = async (
   delegateCountry: string,
   type: PointType,
   questionText: string,
-  linkedSpeechId: string | null
+  linkedSpeechId: string | null,
+  isProcedural: boolean = false,
+  chairRemarks: string = ''
 ): Promise<string> => {
   const now = Date.now();
   const point: Omit<Point, 'id'> = {
@@ -31,9 +33,9 @@ export const raisePoint = async (
     type,
     questionText,
     chairRuling: 'pending',
-    chairRemarks: '',
-    isProcedural: false,
-    didPauseTimer: false,
+    chairRemarks,
+    isProcedural,
+    didPauseTimer: isProcedural,
     linkedSpeechId,
     createdAt: now,
   };
