@@ -4,8 +4,7 @@ node_modules/
 # Build output
 dist/
 
-# Environment variables — NEVER commit this
-.env
+# Environment variables
 .env.local
 .env.production
 
@@ -16,11 +15,6 @@ npm-debug.log*
 # Editor
 .vscode/
 .idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
 
 # OS
 .DS_Store
