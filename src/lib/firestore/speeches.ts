@@ -8,10 +8,11 @@ import {
   where,
   orderBy,
   getDocs,
+  getDoc,
 } from 'firebase/firestore';
 import { db } from '../firebase';
-import type { Speech, YieldType } from '../../types';
-import { updateDelegate } from './delegates';
+import type { Speech, YieldType, Delegate } from '../../types';
+import { updateDelegate, recalculateEngagementScore } from './delegates';
 import { logTimelineEvent } from './timeline';
 
 const COL = 'speeches';
@@ -90,6 +91,16 @@ export const endSpeech = async (
     totalSpeechSeconds: increment(usedSeconds),
     updatedAt: Date.now(),
   });
+
+  // Trigger auto-recalc of engagement score
+  const updatedSnap = await getDoc(delegateRef);
+  if (updatedSnap.exists()) {
+    const delegate = { id: delegateId, ...updatedSnap.data() } as Delegate;
+    const { session } = (await import('../../store/sessionStore')).useSessionStore.getState();
+    if (session?.settings.engagementWeights) {
+      await recalculateEngagementScore(delegateId, delegate, session.settings.engagementWeights);
+    }
+  }
 
   await logTimelineEvent({
     sessionId,

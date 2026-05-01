@@ -6,6 +6,7 @@ import { useMotionStore } from '../store/motionStore';
 import { useUIStore } from '../store/uiStore';
 import { useTimerStore } from '../store/timerStore';
 import { useResolutionStore } from '../store/resolutionStore';
+import { useSpeechStore } from '../store/speechStore';
 import type { Session } from '../types';
 import { Plus, X, Zap, Calendar, Users, Clock } from 'lucide-react';
 import './Home.css';
@@ -17,6 +18,7 @@ export const Home: React.FC = () => {
   const { setActivePage, addNotification } = useUIStore();
   const { restoreFromFirestore } = useTimerStore();
   const { subscribeToResolutions } = useResolutionStore();
+  const { subscribeToSpeeches } = useSpeechStore();
   const [sessions, setSessions] = useState<Session[]>([]);
   const [showNew, setShowNew] = useState(false);
   const [form, setForm] = useState({
@@ -35,6 +37,7 @@ export const Home: React.FC = () => {
     subscribeToDelegates(session.id);
     subscribeToMotions(session.id);
     subscribeToResolutions(session.id);
+    subscribeToSpeeches(session.id);
     if (session.timerState) restoreFromFirestore(session.timerState);
     setActivePage('session');
     addNotification(`Opened: ${session.committee}`, 'success');

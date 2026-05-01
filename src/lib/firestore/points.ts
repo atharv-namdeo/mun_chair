@@ -23,7 +23,10 @@ export const raisePoint = async (
   questionText: string,
   linkedSpeechId: string | null,
   isProcedural: boolean = false,
-  chairRemarks: string = ''
+  chairRemarks: string = '',
+  ruleViolated: string | null = null,
+  targetDelegateId: string | null = null,
+  targetCountry: string | null = null
 ): Promise<string> => {
   const now = Date.now();
   const point: Omit<Point, 'id'> = {
@@ -35,6 +38,9 @@ export const raisePoint = async (
     chairRuling: 'pending',
     chairRemarks,
     isProcedural,
+    ruleViolated,
+    targetDelegateId,
+    targetCountry,
     didPauseTimer: isProcedural,
     linkedSpeechId,
     createdAt: now,
@@ -46,6 +52,17 @@ export const raisePoint = async (
     pointCount: increment(1),
     updatedAt: Date.now(),
   });
+
+  // Trigger auto-recalc of engagement score
+  const { getDoc } = await import('firebase/firestore');
+  const updatedSnap = await getDoc(delegateRef);
+  if (updatedSnap.exists()) {
+    const delegate = { id: delegateId, ...updatedSnap.data() } as any;
+    const { session } = (await import('../../store/sessionStore')).useSessionStore.getState();
+    if (session?.settings.engagementWeights) {
+      await (await import('./delegates')).recalculateEngagementScore(delegateId, delegate, session.settings.engagementWeights);
+    }
+  }
 
   await logTimelineEvent({
     sessionId,

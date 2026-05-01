@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { useResolutionStore } from '../../store/resolutionStore';
 import { useSessionStore } from '../../store/sessionStore';
 import { useDelegateStore } from '../../store/delegateStore';
-import { createResolution, updateResolutionStatus } from '../../lib/firestore/resolutions';
-import { FileText, Plus, ExternalLink } from 'lucide-react';
+import { 
+  createResolution, 
+  updateResolutionStatus, 
+  updateResolutionParticipants 
+} from '../../lib/firestore/resolutions';
+import { FileText, Plus, ExternalLink, Users as UsersIcon, Award } from 'lucide-react';
 import './ResolutionManager.css';
 
 export const ResolutionManager: React.FC = () => {
@@ -12,6 +16,7 @@ export const ResolutionManager: React.FC = () => {
   const { delegates } = useDelegateStore();
   
   const [showForm, setShowForm] = useState(false);
+  const [editingParticipants, setEditingParticipants] = useState<{id: string, type: 'sponsors' | 'signatories'} | null>(null);
   const [form, setForm] = useState({
     title: '', code: '', contentUrl: ''
   });
@@ -29,6 +34,18 @@ export const ResolutionManager: React.FC = () => {
     });
     setShowForm(false);
     setForm({ title: '', code: '', contentUrl: '' });
+  };
+
+  const toggleParticipant = async (resId: string, delegateId: string, type: 'sponsors' | 'signatories') => {
+    const res = resolutions.find(r => r.id === resId);
+    if (!res) return;
+    
+    const current = res[type] || [];
+    const next = current.includes(delegateId)
+      ? current.filter(id => id !== delegateId)
+      : [...current, delegateId];
+    
+    await updateResolutionParticipants(resId, { [type]: next });
   };
 
   const getStatusColor = (status: string) => {
@@ -83,6 +100,21 @@ export const ResolutionManager: React.FC = () => {
             </div>
             <h3 className="res-title">{res.title}</h3>
             
+            <div className="res-meta-stats">
+              <button 
+                className="res-stat-btn" 
+                onClick={() => setEditingParticipants({ id: res.id, type: 'sponsors' })}
+              >
+                <Award size={12} /> {res.sponsors?.length || 0} Sponsors
+              </button>
+              <button 
+                className="res-stat-btn"
+                onClick={() => setEditingParticipants({ id: res.id, type: 'signatories' })}
+              >
+                <UsersIcon size={12} /> {res.signatories?.length || 0} Signatories
+              </button>
+            </div>
+
             <div className="res-actions">
               <select 
                 value={res.status} 
@@ -103,6 +135,31 @@ export const ResolutionManager: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {editingParticipants && (
+        <div className="modal-overlay" onClick={() => setEditingParticipants(null)}>
+          <div className="modal modal-md" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">Select {editingParticipants.type}</h2>
+              <button className="btn btn-ghost btn-icon btn-sm" onClick={() => setEditingParticipants(null)}><Plus size={14} style={{transform:'rotate(45deg)'}} /></button>
+            </div>
+            <div className="participant-selector-grid">
+              {delegates.map(d => {
+                const isSelected = resolutions.find(r => r.id === editingParticipants.id)?.[editingParticipants.type]?.includes(d.id);
+                return (
+                  <button 
+                    key={d.id} 
+                    className={`participant-item ${isSelected ? 'selected' : ''}`}
+                    onClick={() => toggleParticipant(editingParticipants.id, d.id, editingParticipants.type)}
+                  >
+                    {d.country}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

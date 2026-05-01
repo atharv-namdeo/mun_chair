@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { useSessionStore } from './sessionStore';
 import {
   subscribeToSessionDelegates,
   addDelegate,
@@ -85,26 +86,33 @@ export const useDelegateStore = create<DelegateStore>((set, get) => ({
   },
 
   addToQueue: (delegate) => {
-    set((state) => {
-      if (state.speakerQueue.some((q) => q.delegateId === delegate.id)) return state;
-      return {
-        speakerQueue: [
-          ...state.speakerQueue,
-          { delegateId: delegate.id, country: delegate.country, addedAt: Date.now() },
-        ],
-      };
-    });
+    const { session, updateSession } = useSessionStore.getState();
+    if (!session) return;
+    if (session.speakerQueue.some((q) => q.delegateId === delegate.id)) return;
+    
+    const newQueue = [
+      ...session.speakerQueue,
+      { delegateId: delegate.id, country: delegate.country, addedAt: Date.now() },
+    ];
+    updateSession({ speakerQueue: newQueue });
   },
 
   removeFromQueue: (delegateId) => {
-    set((state) => ({
-      speakerQueue: state.speakerQueue.filter((q) => q.delegateId !== delegateId),
-    }));
+    const { session, updateSession } = useSessionStore.getState();
+    if (!session) return;
+    const newQueue = session.speakerQueue.filter((q) => q.delegateId !== delegateId);
+    updateSession({ speakerQueue: newQueue });
   },
 
-  reorderQueue: (queue) => set({ speakerQueue: queue }),
+  reorderQueue: (queue) => {
+    const { updateSession } = useSessionStore.getState();
+    updateSession({ speakerQueue: queue });
+  },
 
-  clearQueue: () => set({ speakerQueue: [] }),
+  clearQueue: () => {
+    const { updateSession } = useSessionStore.getState();
+    updateSession({ speakerQueue: [] });
+  },
 
   getAverageSpeechSeconds: () => {
     const { delegates } = get();

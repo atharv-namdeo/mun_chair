@@ -42,6 +42,8 @@ export interface Session {
     caucusTimer: SerializedTimer;
     unmodTimer: SerializedTimer;
   };
+  speakerQueue: SpeakerQueueEntry[];
+  activeSpeechId: string | null;
   settings: SessionSettings;
   metadata: Record<string, unknown>;
   createdAt: number;
@@ -92,6 +94,8 @@ export interface Delegate {
   rightOfReplyCount: number;
   presenceStatus: 'present' | 'present_and_voting' | 'absent';
   engagementScore: number;
+  chairGrade: number | null; // 1-10
+  awardsCategory: 'none' | 'best' | 'outstanding' | 'honorable' | 'verbal';
   metadata: Record<string, unknown>;
   createdAt: number;
   updatedAt: number;
@@ -163,6 +167,9 @@ export interface Point {
   chairRuling: ChairRuling;
   chairRemarks: string;
   isProcedural: boolean;
+  ruleViolated: string | null;
+  targetDelegateId: string | null;
+  targetCountry: string | null;
   didPauseTimer: boolean;
   linkedSpeechId: string | null; 
   createdAt: number;

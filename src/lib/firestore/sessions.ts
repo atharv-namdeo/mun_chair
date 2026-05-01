@@ -63,6 +63,8 @@ export const createSession = async (data: {
       unmodTimer: defaultTimer(),
     },
     settings: defaultSettings(),
+    speakerQueue: [],
+    activeSpeechId: null,
     debateMode: 'idle',
     metadata: {},
     createdAt: now,

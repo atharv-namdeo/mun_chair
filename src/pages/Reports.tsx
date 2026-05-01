@@ -202,7 +202,59 @@ export const Reports: React.FC = () => {
       </div>
 
       <div className="reports-section">
-        <h2 className="section-title flex items-center gap-2 mb-3"><Mic size={16} /> All Delegates</h2>
+        <h2 className="section-title flex items-center gap-2 mb-3"><Activity size={16} /> Judging & Awards Dashboard</h2>
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Country</th>
+                <th>Score</th>
+                <th>Chair Grade (1-10)</th>
+                <th>Award Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...delegates].sort((a,b)=>b.engagementScore-a.engagementScore).map(d => (
+                <tr key={d.id}>
+                  <td className="font-bold">{d.country}</td>
+                  <td className="mono">{d.engagementScore.toFixed(1)}</td>
+                  <td>
+                    <input 
+                      type="number" 
+                      min="1" max="10"
+                      className="input input-sm" 
+                      style={{width: 60}}
+                      value={d.chairGrade || ''} 
+                      onChange={async (e) => {
+                        const val = parseInt(e.target.value);
+                        await (await import('../lib/firestore/delegates')).updateDelegate(d.id, { chairGrade: isNaN(val) ? null : val });
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <select 
+                      className="input input-sm"
+                      value={d.awardsCategory || 'none'}
+                      onChange={async (e) => {
+                        await (await import('../lib/firestore/delegates')).updateDelegate(d.id, { awardsCategory: e.target.value as any });
+                      }}
+                    >
+                      <option value="none">No Award</option>
+                      <option value="best">Best Delegate</option>
+                      <option value="outstanding">Outstanding Delegate</option>
+                      <option value="honorable">Honorable Mention</option>
+                      <option value="verbal">Verbal Commendation</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="reports-section">
+        <h2 className="section-title flex items-center gap-2 mb-3"><Mic size={16} /> Delegate Statistics</h2>
         <div className="table-wrap">
           <table>
             <thead>

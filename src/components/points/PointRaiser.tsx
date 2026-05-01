@@ -25,6 +25,8 @@ export const PointRaiser: React.FC = () => {
   const [questionText, setQuestionText] = useState('');
   const [isProcedural, setIsProcedural] = useState(false);
   const [chairRemarks, setChairRemarks] = useState('');
+  const [targetDelegateId, setTargetDelegateId] = useState('');
+  const [ruleViolated, setRuleViolated] = useState('');
   const [loading, setLoading] = useState(false);
 
   const presentDelegates = delegates.filter(d => d.isPresent);
@@ -44,15 +46,19 @@ export const PointRaiser: React.FC = () => {
           delegate.country, questionText, true
         );
       } else {
+        const target = delegates.find(d => d.id === targetDelegateId);
         await raisePoint(
           session.id, delegate.id, delegate.country,
           type, questionText, activeSpeech?.id || null,
-          isProcedural, chairRemarks
+          isProcedural, chairRemarks, ruleViolated || null,
+          targetDelegateId || null, target?.country || null
         );
       }
       addNotification(`${type} raised by ${delegate.country}`, 'info');
       setQuestionText('');
       setChairRemarks('');
+      setRuleViolated('');
+      setTargetDelegateId('');
     } catch {
       addNotification('Failed to log point', 'error');
     }
@@ -103,6 +109,34 @@ export const PointRaiser: React.FC = () => {
           value={questionText}
           onChange={e => setQuestionText(e.target.value)}
         />
+      </div>
+
+      <div className="point-form-grid">
+        <div className="form-group">
+          <label htmlFor="point-target">Target Delegate (for POI/RoR)</label>
+          <select
+            id="point-target"
+            className="select"
+            value={targetDelegateId}
+            onChange={e => setTargetDelegateId(e.target.value)}
+          >
+            <option value="">— Optional —</option>
+            {presentDelegates.map(d => (
+              <option key={d.id} value={d.id}>{d.country}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="point-rule">Rule Cited (for POO)</label>
+          <input
+            id="point-rule"
+            className="input"
+            placeholder="e.g. Rule 12.1"
+            value={ruleViolated}
+            onChange={e => setRuleViolated(e.target.value)}
+          />
+        </div>
       </div>
 
       <div className="form-group">

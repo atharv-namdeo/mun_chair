@@ -55,3 +55,10 @@ export const updateResolutionStatus = async (id: string, status: Resolution['sta
     isUndoable: false
   });
 };
+
+export const updateResolutionParticipants = async (
+  id: string, 
+  data: { sponsors?: string[], signatories?: string[] }
+) => {
+  await updateDoc(doc(db, COL, id), { ...data });
+};
